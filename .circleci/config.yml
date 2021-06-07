@@ -18,4 +18,8 @@ workflows:
   main:
     jobs:
       - build:
+          filters:
+            branches:
+              only:
+                - main
           context: SonarCloud
