@@ -6,10 +6,24 @@ This backend is constructed with the [Gin Web Framework](https://github.com/gin-
 
 ## Installation
 
-To create a new Go module you can execute:
+To add missing dependencies you can run:
+
+```bash
+go get -d ./...
+```
+
+To remove unused dependencies you can run:
 
 ```bash
 go mod tidy
+```
+
+## Development
+
+To create a new Go module you can run:
+
+```bash
+go mod init <module_path>?
 ```
 
 ## Running
@@ -25,7 +39,7 @@ go run server.go
 To build the project you can execute
 
 ```bash
-go buils
+go build
 ```
 
 ## Resources
