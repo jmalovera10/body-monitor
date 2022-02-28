@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% block title %} Create Measurment {% endblock %} {% block content %}
+
+<div class="container-fluid p-5">
+  <form action="{% url 'create' %}" method="post" class="row g-3 needs-validation justify-content-center">
+    <div class="col col-sm-12 col-md-8 col-lg-6">
+      {% csrf_token %}
+      <fieldset>
+        <legend><h2>Nueva medición</h2></legend>
+        {% if error_message %}
+        <div class="alert alert-danger mt-5" role="alert">{{ error_message }}</div>
+        {% endif %}
+        <label for="weight">Peso (Kg)</label><br />
+        <input type="number" class="form-control" name="weight" id="weight" min="0" value="0" />
+        <label for="fat_percentage">Porcentaje de grasa (%)</label><br />
+        <input type="number" class="form-control" name="fat_percentage" id="fat_percentage" min="0" value="0" />
+        <label for="muscle_percentage">Porcentaje de músculo (%)</label><br />
+        <input type="number" class="form-control" name="muscle_percentage" id="muscle_percentage" min="0" value="0" />
+        <label for="calories">Calorias</label><br />
+        <input type="number" class="form-control" name="calories" id="calories" min="0" value="0" />
+      </fieldset>
+      <br />
+      <input type="submit" class="btn btn-primary" value="Guardar" />
+    </div>
+  </form>
+</div>
+{% endblock content %}

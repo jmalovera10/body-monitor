@@ -1,0 +1,40 @@
+{% extends 'base.html'%} {% block title %}Login{% endblock %} {% block content %}
+
+<div class="container-fluid p-5">
+  <div class="row justify-content-center">
+    <div class="col col-sm-12 col-md-6 col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title"><h2>Login</h2></div>
+          <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="row p-2 pt-1 pb-0">
+        
+                {{ form.username.label_tag }}
+                {{ form.username }}
+            </div> 
+            <div class="row p-2 pt-1 pb-0">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+            </div>
+              <div class="row p-2 pt-4 pb-1">
+                  <input class="btn btn-primary" type="submit"></input>
+                  <input type="hidden" name="next" value="{{ next }}" />
+              </div>
+          </form>
+        </div>
+        <div class="card-footer text-muted">
+          <p><a href="{% url 'password_reset' %}">Olvidaste tu contraseña?</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if form.errors %}
+  <div class="alert alert-danger mt-5" role="alert">
+    El usuario o la contraseña no son correctos, revisa tus datos e intenta nuevamente.
+  </div>
+  {% endif %}
+</div>
+
+{% endblock content %}

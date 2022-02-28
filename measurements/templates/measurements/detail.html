@@ -7,7 +7,7 @@
       <fieldset>
         <legend><h2>Medición {{ measurement.created_at }}</h2></legend>
         {% if error_message %}
-        <p><strong>{{ error_message }}</strong></p>
+        <div class="alert alert-danger mt-5" role="alert">{{ error_message }}</div>
         {% endif %}
         <label for="weight">Peso (Kg)</label><br />
         <input type="number" class="form-control" name="weight" id="weight" min="0" value="{{ measurement.weight }}" />

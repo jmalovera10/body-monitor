@@ -1,0 +1,104 @@
+{% extends 'base.html'%} {% block title %}Measurements{% endblock %} {% block content %}
+
+<div class="container-fluid p-3">
+  <div class="row">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Mediciones</li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="row justify-content-end mb-3">
+    <div class="col-auto">
+      <a href="{% url 'create' %}" class="btn btn-primary"
+        ><i class="fa-solid fa-circle-plus p-1"></i> Crear medición</a
+      >
+    </div>
+  </div>
+
+  {% if error_message %}
+  <div class="alert alert-danger mt-5" role="alert">{{ error_message }}</div>
+  {% endif %} {% if latest_measurement_list %}
+  <div class="row p-3">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Fecha</th>
+          <th scope="col">Peso (Kg)</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for measurement in latest_measurement_list %}
+        <tr>
+          <th scope="row">{{ measurement.get_formatted_date }}</th>
+          <td>{{ measurement.weight }}</td>
+          <td>
+            <a href="{% url 'detail' measurement.id %}" class="btn btn-primary"
+              ><i class="fa-solid fa-pen-to-square"></i> Editar</a
+            >
+          </td>
+          <td>
+            <!-- <a href="{% url 'delete' measurement.id %}" class="btn btn-danger"
+              ><i class="fa-solid fa-trash-can"></i> Eliminar</a
+            > -->
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+              <i class="fa-solid fa-trash-can"></i> Eliminar
+            </button>
+
+            <div
+              class="modal fade"
+              id="deleteModal"
+              tabindex="-1"
+              aria-labelledby="deleteModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Estas seguro de que quieres eliminar la medición de <strong>{{ measurement.created_at}}</strong>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a type="button" class="btn btn-danger" href="{% url 'delete' measurement.id %}">Eliminar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+        {% endif %}
+
+        <li class="page-item active">
+          <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
+        </li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+
+  {% else %}
+  <p>No measurements were found.</p>
+  {% endif %}
+</div>
+{% endblock content %}

@@ -1,6 +1,6 @@
 {% extends 'base.html'%} {% block title %}Measurements{% endblock %} {% block content %}
-
-<div class="container-fluid p-5">
+<div class="container-fluid p-3">
+  {% if latest_measurement_list %}
   <div class="row">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
@@ -9,50 +9,142 @@
     </nav>
   </div>
 
-  <div class="row justify-content-end">
+  <div class="row justify-content-end mb-3">
     <div class="col-auto">
-      <a href="#" class="btn btn-primary"><i class="fa-solid fa-circle-plus p-1"></i> Crear nueva</a>
+      <a href="{% url 'index' %}" class="btn btn-secondary"
+        ><i class="fa-solid fa-weight-scale p-1"></i> Ver mediciones</a
+      >
+    </div>
+    <div class="col-auto">
+      <a href="{% url 'create' %}" class="btn btn-primary"
+        ><i class="fa-solid fa-circle-plus p-1"></i> Crear medición</a
+      >
     </div>
   </div>
 
-  {% if latest_measurement_list %}
-  <div class="row p-3">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Fecha</th>
-          <th scope="col">Peso (Kg)</th>
-          <th scope="col">Porcentaje de grasa (%)</th>
-          <th scope="col">Porcentaje de músculo (%)</th>
-          <th scope="col">Calorias</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for measurement in latest_measurement_list %}
-        <tr>
-          <th scope="row">{{ measurement.created_at }}</th>
-          <td>{{ measurement.weight }}</td>
-          <td>{{ measurement.fat_percentage }}</td>
-          <td>{{ measurement.muscle_percentage }}</td>
-          <td>{{ measurement.calories }}</td>
-          <td>
-            <a href="{% url 'detail' measurement.id %}" class="btn btn-primary">Editar</a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-      </ul>
-    </nav>
+  <div class="row">
+    <div class="col col-sm-12 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            <h4>Peso</h4>
+            <canvas id="weight-chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col col-sm-12 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            <h4>Porcentaje de grasa (%)</h4>
+            <canvas id="fat-percentage-chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col col-sm-12 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            <h4>Porcentaje muscular (%)</h4>
+            <canvas id="muscle-percentage-chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col col-sm-12 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            <h4>Calorias</h4>
+            <canvas id="calories-chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script>
+    var weightConfig = {
+      type: "line",
+      data: {
+        datasets: [{
+          data: {{ weight_data|safe }},
+          backgroundColor: '#FFFFFF',
+          borderColor: '#82D173',
+          label: 'Peso (Kg)'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true,
+      },
+    };
+
+    var fatConfig = {
+      type: "line",
+      data: {
+        datasets: [{
+          data: {{ fat_percentage_data|safe }},
+          backgroundColor: '#FFFFFF',
+          borderColor: '#ABFAA9',
+          label: 'Grasa (%)'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true,
+      },
+    };
+
+
+
+    var muscleConfig = {
+      type: "line",
+      data: {
+        datasets: [{
+          data: {{ muscle_percentage_data|safe }},
+          backgroundColor: '#FFFFFF',
+          borderColor: '#4C2C69',
+          label: 'Músculo (%)'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true,
+      },
+    };
+
+    var caloriesConfig = {
+      type: "line",
+      data: {
+        datasets: [{
+          data: {{ calories_data|safe }},
+          backgroundColor: '#95A3B3',
+          borderColor: '#42253B',
+          label: 'Calorias'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true,
+      },
+    };
+
+    window.onload = function () {
+      var weightCtx = document.getElementById("weight-chart").getContext("2d");
+      var fatCtx = document.getElementById("fat-percentage-chart").getContext("2d");
+      var muscleCtx = document.getElementById("muscle-percentage-chart").getContext("2d");
+      var caloriesCtx = document.getElementById("calories-chart").getContext("2d");
+
+      window.weightChart = new Chart(weightCtx, weightConfig);
+      window.fatChart = new Chart(fatCtx, fatConfig);
+      window.muscleChart = new Chart(muscleCtx, muscleConfig);
+      window.caloriesChart = new Chart(caloriesCtx, caloriesConfig);
+    };
+  </script>
   {% else %}
   <p>No measurements were found.</p>
   {% endif %}
