@@ -1,1 +1,1 @@
-web: gunicorn myproject.wsgi
+web: gunicorn body_monitor.wsgi
