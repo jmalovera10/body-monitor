@@ -17,15 +17,16 @@ class HomeView(LoginRequiredMixin, generic.ListView):
 
     
     def get_queryset(self):
-        return Measurement.objects.filter(user=self.request.user).order_by('-created_at')
+        return Measurement.objects.filter(user=self.request.user)
     
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        measurements = Measurement.objects.filter(user=self.request.user).order_by('-created_at')[:7]
+        measurements = Measurement.objects.filter(user=self.request.user)
         dates = [data.created_at.strftime('%m/%d') for data in measurements]
         weight_data = [data.weight for data in measurements]
         fat_percentage_data = [data.fat_percentage for data in measurements]
         muscle_percentage_data = [data.muscle_percentage for data in measurements]
         calories_data = [data.calories for data in measurements]
+        
         
         return {
                 "latest_measurement_list": measurements, 
@@ -45,7 +46,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     paginate_by = 10
     
     def get_queryset(self):
-        return Measurement.objects.filter(user=self.request.user).order_by('-created_at')
+        return Measurement.objects.filter(user=self.request.user)
     
     
 

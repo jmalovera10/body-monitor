@@ -10,13 +10,29 @@
         <div class="alert alert-danger mt-5" role="alert">{{ error_message }}</div>
         {% endif %}
         <label for="weight">Peso (Kg)</label><br />
-        <input type="number" class="form-control" name="weight" id="weight" min="0" value="0" />
+        <input type="number" class="form-control" name="weight" id="weight" min="0" value="0" step="0.1" />
         <label for="fat_percentage">Porcentaje de grasa (%)</label><br />
-        <input type="number" class="form-control" name="fat_percentage" id="fat_percentage" min="0" value="0" />
+        <input
+          type="number"
+          class="form-control"
+          name="fat_percentage"
+          id="fat_percentage"
+          min="0"
+          value="0"
+          step="0.1"
+        />
         <label for="muscle_percentage">Porcentaje de músculo (%)</label><br />
-        <input type="number" class="form-control" name="muscle_percentage" id="muscle_percentage" min="0" value="0" />
+        <input
+          type="number"
+          class="form-control"
+          name="muscle_percentage"
+          id="muscle_percentage"
+          min="0"
+          value="0"
+          step="0.1"
+        />
         <label for="calories">Calorias</label><br />
-        <input type="number" class="form-control" name="calories" id="calories" min="0" value="0" />
+        <input type="number" class="form-control" name="calories" id="calories" min="0" value="0" step="0.1" />
       </fieldset>
       <br />
       <input type="submit" class="btn btn-primary" value="Guardar" />
